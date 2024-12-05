@@ -1,0 +1,4 @@
+sys
+sqlite3
+PyQt6.QtWidgets
+uic
