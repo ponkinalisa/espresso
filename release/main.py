@@ -2,13 +2,13 @@ import sys
 import sqlite3
 
 from PyQt6.QtWidgets import QMainWindow, QApplication, QTableWidgetItem
-from PyQt6 import uic
+from UI import mainui as m, editui as e
 
 
-class Add(QMainWindow):
+class Add(QMainWindow, e.Ui_MainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi('addEditCoffeeForm.ui', self)
+        self.setupUi(self)
         self.new_or_change.clicked.connect(self.run)
 
     def run(self):
@@ -22,7 +22,7 @@ class Add(QMainWindow):
             l5 = self.line_volume.text()
             if l4 == '':
                 l4 = 0
-            self.con = sqlite3.connect("coffee.sqlite")
+            self.con = sqlite3.connect("../data/coffee.sqlite")
             self.cur = self.con.cursor()
             id_tab = self.cur.execute(f"SELECT * FROM cof WHERE ID = {id}").fetchone()
             if id_tab is None:
@@ -40,16 +40,16 @@ class Add(QMainWindow):
             print('%s' % e)
 
 
-class Caputino(QMainWindow):
+class Caputino(QMainWindow, m.Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.w = None
-        uic.loadUi('main.ui', self)
+        self.setupUi(self)
         self.get.clicked.connect(self.run)
         self.add.clicked.connect(self.run1)
 
     def run(self):
-        self.con = sqlite3.connect("coffee.sqlite")
+        self.con = sqlite3.connect("../data/coffee.sqlite")
         self.cur = self.con.cursor()
         result = self.cur.execute("SELECT * FROM cof").fetchall()
         self.tableWidget.setRowCount(len(result))
